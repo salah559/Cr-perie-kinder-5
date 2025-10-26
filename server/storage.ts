@@ -29,6 +29,7 @@ export interface IStorage {
   getMenuItem(id: string): Promise<MenuItem | undefined>;
   createMenuItem(item: InsertMenuItem): Promise<MenuItem>;
   updateMenuItem(id: string, item: Partial<InsertMenuItem>): Promise<MenuItem | undefined>;
+  deleteMenuItem(id: string): Promise<boolean>;
 
   // Reservations
   getReservations(): Promise<Reservation[]>;
@@ -422,4 +423,6 @@ export class MemStorage implements IStorage {
   }
 }
 
-export const storage = new MemStorage();
+import { FirestoreStorage } from "./firestore-storage";
+
+export const storage = new FirestoreStorage();

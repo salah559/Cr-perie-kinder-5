@@ -6,13 +6,13 @@ import { getStorage } from 'firebase/storage';
 import { getAnalytics } from 'firebase/analytics';
 
 const firebaseConfig = {
-  apiKey: "AIzaSyCWhpu5xPzjh4ZjHBB3aTGoWzmeVoUU-_0",
-  authDomain: "creperie-kinder5.firebaseapp.com",
-  projectId: "creperie-kinder5",
-  storageBucket: "creperie-kinder5.firebasestorage.app",
-  messagingSenderId: "391049828865",
-  appId: "1:391049828865:web:92ff17de37932290a2fe00",
-  measurementId: "G-T1BNS329KS"
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+  appId: import.meta.env.VITE_FIREBASE_APP_ID,
+  measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID
 };
 
 // Initialize Firebase
