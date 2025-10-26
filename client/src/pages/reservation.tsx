@@ -243,10 +243,11 @@ export default function ReservationPage() {
                         <FormLabel>Special Requests (Optional)</FormLabel>
                         <FormControl>
                           <Textarea
-                            placeholder="Any dietary restrictions or special occasions?"
-                            className="resize-none"
-                            rows={3}
                             {...field}
+                            value={field.value || ''}
+                            placeholder="Any dietary restrictions or special occasions?"
+                            className="min-h-[100px]"
+                            rows={4}
                             data-testid="input-special-requests"
                           />
                         </FormControl>

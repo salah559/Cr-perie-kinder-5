@@ -76,7 +76,7 @@ export function AddMenuItemDialog({ onSuccess }: { onSuccess: () => void }) {
     }
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent): Promise<void> => {
     e.preventDefault();
     setLoading(true);
 

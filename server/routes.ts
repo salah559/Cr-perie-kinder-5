@@ -87,14 +87,16 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const fileName = `menu-items/${timestamp}-${randomString}${fileExtension}`;
 
       // Upload to Object Storage
-      await client.uploadFromBytes(fileName, new Uint8Array(req.file.buffer));
+      await client.uploadFromBytes(fileName, new Uint8Array(fs.readFileSync(req.file.path)));
 
       // Generate URL (for now, we'll store the path and serve it later)
       const imageUrl = `/storage/${fileName}`;
 
       // Delete the temporary file if it exists
       if (req.file.path) {
-        await fs.unlink(req.file.path).catch(() => {});
+        if (fs.existsSync(req.file.path)) {
+          fs.unlinkSync(req.file.path);
+        }
       }
 
       res.json({ imageUrl });
@@ -202,12 +204,14 @@ export async function registerRoutes(app: Express): Promise<Server> {
         const fileExtension = path.extname(req.file.originalname);
         const fileName = `menu-items/${timestamp}-${randomString}${fileExtension}`;
 
-        await client.uploadFromBytes(fileName, new Uint8Array(req.file.buffer));
+        await client.uploadFromBytes(fileName, new Uint8Array(fs.readFileSync(req.file.path)));
         updates.imageUrl = `/storage/${fileName}`;
 
         // Delete the temporary file if it exists
         if (req.file.path) {
-          await fs.promises.unlink(req.file.path).catch(() => {});
+          if (fs.existsSync(req.file.path)) {
+            fs.unlinkSync(req.file.path);
+          }
         }
 
         console.log('New image URL:', updates.imageUrl);
@@ -358,7 +362,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.status(400).json({ error: "Target file not specified" });
       }
 
-      const fs = await import('fs');
       let targetPath: string;
 
       // Determine the target path based on category
