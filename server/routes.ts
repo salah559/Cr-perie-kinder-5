@@ -6,7 +6,8 @@ import authRouter, { requireAuth, requireRole } from "./auth";
 import multer from "multer";
 import path from "path";
 import { fileURLToPath } from "url";
-import { Client } from '@replit/object-storage'; // Import Replit Object Storage client
+import { Client } from '@replit/object-storage';
+import fs from 'fs';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -86,7 +87,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const fileName = `menu-items/${timestamp}-${randomString}${fileExtension}`;
 
       // Upload to Object Storage
-      await client.uploadFromBytes(fileName, req.file.buffer);
+      await client.uploadFromBytes(fileName, new Uint8Array(req.file.buffer));
 
       // Generate URL (for now, we'll store the path and serve it later)
       const imageUrl = `/storage/${fileName}`;
@@ -201,12 +202,12 @@ export async function registerRoutes(app: Express): Promise<Server> {
         const fileExtension = path.extname(req.file.originalname);
         const fileName = `menu-items/${timestamp}-${randomString}${fileExtension}`;
 
-        await client.uploadFromBytes(fileName, req.file.buffer);
+        await client.uploadFromBytes(fileName, new Uint8Array(req.file.buffer));
         updates.imageUrl = `/storage/${fileName}`;
 
         // Delete the temporary file if it exists
         if (req.file.path) {
-          await fs.unlink(req.file.path).catch(() => {});
+          await fs.promises.unlink(req.file.path).catch(() => {});
         }
 
         console.log('New image URL:', updates.imageUrl);
@@ -304,7 +305,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Asset management endpoints for admins
   app.get("/api/assets", requireRole("owner"), async (req, res) => {
     try {
-      const fs = await import('fs');
       const assetsDir = path.join(__dirname, '..', 'attached_assets');
 
       const assetCategories = {

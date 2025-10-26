@@ -42,7 +42,7 @@ export default function ReservationPage() {
       date: "",
       time: "",
       partySize: 2,
-      specialRequests: undefined,
+      specialRequests: "",
     },
   });
 

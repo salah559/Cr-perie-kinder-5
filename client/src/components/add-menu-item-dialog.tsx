@@ -24,7 +24,6 @@ import { Plus, X } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { useImageUpload } from '@/hooks/useImageUpload';
 import { useAuth } from '@/contexts/auth-context';
-import { deleteImageFromFirebase } from '@/lib/firebase-storage';
 
 interface Category {
   id: string;
